@@ -2,11 +2,12 @@ package aic.gas.mas.model.planing.heap;
 
 import aic.gas.mas.model.ResponseReceiverInterface;
 import aic.gas.mas.model.planing.SharedDesireInRegister;
-import aic.gas.mas.utils.MyLogger;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Routine for sharing desire with mediator
  */
+@Slf4j
 class SharingDesireRoutine implements ResponseReceiverInterface<Boolean> {
 
   private final Object lockMonitor = new Object();
@@ -18,16 +19,14 @@ class SharingDesireRoutine implements ResponseReceiverInterface<Boolean> {
         try {
           lockMonitor.wait();
         } catch (InterruptedException e) {
-          MyLogger.getLogger()
-              .warning(this.getClass().getSimpleName() + ": " + e.getLocalizedMessage());
+          log.error(this.getClass().getSimpleName() + ": " + e.getLocalizedMessage());
         }
 
         //is desire register, if so, make intention out of it
         if (registered) {
           return true;
         } else {
-          MyLogger.getLogger()
-              .warning(this.getClass().getSimpleName() + ": desire for others was not registered.");
+          log.error(this.getClass().getSimpleName() + ": desire for others was not registered.");
         }
       }
     }

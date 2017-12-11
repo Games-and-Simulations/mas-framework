@@ -133,12 +133,12 @@ public abstract class Intention<T extends InternalDesire<?>> implements FactCont
 
   @Override
   public boolean equals(Object o) {
-      if (this == o) {
-          return true;
-      }
-      if (!(o instanceof Intention)) {
-          return false;
-      }
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Intention)) {
+      return false;
+    }
 
     Intention<?> intention = (Intention<?>) o;
     return originalDesire.equals(intention.originalDesire);

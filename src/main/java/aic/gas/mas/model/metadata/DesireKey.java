@@ -3,7 +3,6 @@ package aic.gas.mas.model.metadata;
 import aic.gas.mas.model.FactContainerInterface;
 import aic.gas.mas.model.knowledge.Fact;
 import aic.gas.mas.model.knowledge.FactSet;
-import aic.gas.mas.utils.MyLogger;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -12,10 +11,12 @@ import java.util.Set;
 import java.util.stream.Stream;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Class describing metadata for desire - used for identification and parameter type definition.
  */
+@Slf4j
 public class DesireKey extends DesireKeyID implements FactContainerInterface {
 
   private final Map<FactKey<?>, Fact<?>> factParameterMap = new HashMap<>();
@@ -51,8 +52,7 @@ public class DesireKey extends DesireKeyID implements FactContainerInterface {
     if (fact != null) {
       return Optional.ofNullable(fact.getContent());
     }
-    MyLogger.getLogger()
-        .warning(factKey.getName() + " is not present in " + this.getName() + " type definition.");
+    log.error(factKey.getName() + " is not present in " + this.getName() + " type definition.");
     return Optional.empty();
   }
 
@@ -62,8 +62,7 @@ public class DesireKey extends DesireKeyID implements FactContainerInterface {
     if (factSet != null) {
       return Optional.ofNullable((S) factSet.getContent().stream());
     }
-    MyLogger.getLogger()
-        .warning(factKey.getName() + " is not present in " + this.getName() + " type definition.");
+    log.error(factKey.getName() + " is not present in " + this.getName() + " type definition.");
     return Optional.empty();
   }
 

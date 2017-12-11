@@ -13,12 +13,13 @@ import aic.gas.mas.model.planing.heap.Node;
 import aic.gas.mas.model.planing.heap.Parent;
 import aic.gas.mas.model.planing.heap.TreeVisitorInterface;
 import aic.gas.mas.model.planing.heap.VisitorAcceptor;
-import aic.gas.mas.utils.MyLogger;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * CommandExecutor visitor traverse heapOfTrees to get to leafs. When agent is committed to desire
  * in leaf and it contains command to be executed it sends command to agent to handle it
  */
+@Slf4j
 public class CommandExecutor implements TreeVisitorInterface, ResponseReceiverInterface<Boolean> {
 
   private final Object lockMonitor = new Object();
@@ -65,8 +66,7 @@ public class CommandExecutor implements TreeVisitorInterface, ResponseReceiverIn
         try {
           lockMonitor.wait();
         } catch (InterruptedException e) {
-          MyLogger.getLogger()
-              .warning(this.getClass().getSimpleName() + ": " + e.getLocalizedMessage());
+          log.error(this.getClass().getSimpleName() + ": " + e.getLocalizedMessage());
         }
       }
     }
@@ -109,8 +109,7 @@ public class CommandExecutor implements TreeVisitorInterface, ResponseReceiverIn
     //notify waiting method
     synchronized (lockMonitor) {
       if (!response) {
-        MyLogger.getLogger()
-            .info(this.getClass().getSimpleName() + " could not execute acting command");
+        log.info(this.getClass().getSimpleName() + " could not execute acting command");
       }
       lockMonitor.notify();
     }

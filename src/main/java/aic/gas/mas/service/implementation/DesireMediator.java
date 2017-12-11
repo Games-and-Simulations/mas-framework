@@ -6,10 +6,10 @@ import aic.gas.mas.model.agents.Agent;
 import aic.gas.mas.model.planing.SharedDesire;
 import aic.gas.mas.model.planing.SharedDesireForAgents;
 import aic.gas.mas.model.planing.SharedDesireInRegister;
-import aic.gas.mas.model.servicies.desires.ReadOnlyDesireRegister;
-import aic.gas.mas.model.servicies.desires.WorkingDesireRegister;
-import aic.gas.mas.service.MASFacade;
-import aic.gas.mas.service.MediatorTemplate;
+import aic.gas.mas.model.servicies.desires.DesireRegister;
+import aic.gas.mas.model.servicies.desires.IReadOnlyDesireRegister;
+import aic.gas.mas.model.servicies.desires.IWorkingDesireRegister;
+import aic.gas.mas.service.AMediatorTemplate;
 import java.util.Optional;
 import java.util.Set;
 
@@ -19,11 +19,10 @@ import java.util.Set;
  * then to other agents. Class defines method to access queue. <p>
  */
 public class DesireMediator extends
-    MediatorTemplate<ReadOnlyDesireRegister, WorkingDesireRegister> {
+    AMediatorTemplate<IReadOnlyDesireRegister, IWorkingDesireRegister> {
 
   public DesireMediator() {
-    super(new WorkingDesireRegister(),
-        MASFacade::getLengthOfIntervalBeforeUpdatingRegisterWithDesires);
+    super(new DesireRegister());
   }
 
   /**

@@ -15,16 +15,17 @@ import aic.gas.mas.model.planing.SharedDesireForAgents;
 import aic.gas.mas.model.planing.command.ActCommand;
 import aic.gas.mas.model.planing.command.CommandForIntention;
 import aic.gas.mas.model.planing.command.ReasoningCommand;
-import aic.gas.mas.utils.MyLogger;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Template for intention in top level
  */
+@Slf4j
 public abstract class IntentionNodeAtTopLevel<V extends Intention<? extends InternalDesire<?>>, T extends InternalDesire<V>> extends
     Node.TopLevel implements IntentionNodeInterface, VisitorAcceptor {
 
@@ -114,8 +115,7 @@ public abstract class IntentionNodeAtTopLevel<V extends Intention<? extends Inte
               try {
                 lockMonitor.wait();
               } catch (InterruptedException e) {
-                MyLogger.getLogger().warning(
-                    this.getClass().getSimpleName() + ": " + e.getLocalizedMessage());
+                log.error(this.getClass().getSimpleName() + ": " + e.getLocalizedMessage());
               }
 
               //is desire register, if so, make intention out of it
@@ -123,7 +123,7 @@ public abstract class IntentionNodeAtTopLevel<V extends Intention<? extends Inte
                 formDesireNodeAndReplaceIntentionNode();
                 return true;
               } else {
-                MyLogger.getLogger().warning(
+                log.error(
                     this.getClass().getSimpleName() + ": desire for others was not registered.");
               }
             }

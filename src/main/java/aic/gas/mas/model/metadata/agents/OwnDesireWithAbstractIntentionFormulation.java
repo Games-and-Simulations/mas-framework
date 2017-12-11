@@ -5,14 +5,15 @@ import aic.gas.mas.model.metadata.DesireKey;
 import aic.gas.mas.model.metadata.DesireParameters;
 import aic.gas.mas.model.metadata.agents.configuration.ConfigurationWithAbstractPlan;
 import aic.gas.mas.model.planing.OwnDesire;
-import aic.gas.mas.utils.MyLogger;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Concrete implementation of own desire with abstract plan formulation
  */
+@Slf4j
 public class OwnDesireWithAbstractIntentionFormulation extends
     DesireFormulation.WithAbstractPlan implements
     OwnInternalDesireFormulation<OwnDesire.WithAbstractIntention> {
@@ -69,7 +70,7 @@ public class OwnDesireWithAbstractIntentionFormulation extends
     @Override
     public boolean supportsDesireType(DesireKey parent, DesireKey key) {
       if (stack.get(parent) == null || !stack.get(parent).supportsDesireType(key)) {
-        MyLogger.getLogger().warning(parent.getName() + " is not associated with " + key.getName());
+        log.error(parent.getName() + " is not associated with " + key.getName());
         return supportsType(key);
       }
       return true;

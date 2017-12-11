@@ -1,16 +1,17 @@
 package aic.gas.mas.model.metadata;
 
-import aic.gas.mas.utils.MyLogger;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Abstract class key to be extended by each class describing some kind of metadata used in
  * framework
  */
+@Slf4j
 public abstract class Key {
 
   //structure to keep track of names to prevent duplicities
@@ -27,7 +28,7 @@ public abstract class Key {
       Set<String> identificationsForClass = keysNameByClass
           .computeIfAbsent(classOfKey, aClass -> new HashSet<>());
       if (identificationsForClass.contains(name)) {
-        MyLogger.getLogger().warning(
+        log.error(
             "Key with name " + name + " was already defined for " + classOfKey.getSimpleName());
         throw new IllegalArgumentException(
             "Key with name " + name + " was already defined for " + classOfKey.getSimpleName());

@@ -5,17 +5,18 @@ import aic.gas.mas.model.planing.command.ReasoningCommand;
 import aic.gas.mas.service.implementation.AgentsRegister;
 import aic.gas.mas.service.implementation.BeliefMediator;
 import aic.gas.mas.service.implementation.DesireMediator;
-import aic.gas.mas.utils.MyLogger;
 import com.rits.cloning.Cloner;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Facade for framework. It keeps useful references as well as declaration of common data
  * structures
  */
+@Slf4j
 public class MASFacade implements TerminableService {
 
   //for cloning data
@@ -71,7 +72,7 @@ public class MASFacade implements TerminableService {
     if (agentsInSystem.remove(agent)) {
       agent.terminateAgent(removeAgentFromGlobalBeliefs);
     } else {
-      MyLogger.getLogger().warning("Agent is not registered in system.");
+      log.error("Agent is not registered in system.");
       throw new IllegalArgumentException("Agent is not registered in system.");
     }
   }

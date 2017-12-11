@@ -6,7 +6,7 @@
 
   <groupId>aic.gas.mas</groupId>
   <artifactId>mas-framework</artifactId>
-  <version>0.1</version>
+  <version>0.11</version>
   <name>MAS framework</name>
   <description>
     Module defining framework for the distributed multi-agent system with selfish agents.
@@ -18,10 +18,12 @@
   </description>
 
   <properties>
-    <lombok.version>1.16.10</lombok.version>
-    <lombok-maven-plugin.version>1.16.10.0</lombok-maven-plugin.version>
-    <annotations.version>13.0</annotations.version>
-    <cloning.version>1.9.3</cloning.version>
+    <lombok-maven-plugin.version>1.16.18.1</lombok-maven-plugin.version>
+    <lombok.version>1.16.18</lombok.version>
+    <annotations.version>15.0</annotations.version>
+    <cloning.version>1.9.8</cloning.version>
+    <junit.version>4.12</junit.version>
+    <slf4j.version>1.7.25</slf4j.version>
   </properties>
 
   <build>
@@ -80,6 +82,16 @@
         <artifactId>annotations</artifactId>
         <version>${annotations.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -95,6 +107,14 @@
     <dependency>
       <groupId>org.jetbrains</groupId>
       <artifactId>annotations</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
     </dependency>
   </dependencies>
 

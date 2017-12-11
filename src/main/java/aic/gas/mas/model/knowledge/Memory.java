@@ -7,18 +7,19 @@ import aic.gas.mas.model.metadata.AgentTypeID;
 import aic.gas.mas.model.metadata.DesireKey;
 import aic.gas.mas.model.metadata.DesireParameters;
 import aic.gas.mas.model.metadata.FactKey;
-import aic.gas.mas.utils.MyLogger;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Template class for memory - it stores facts, sets of facts, agent type and commitment process in
  * form of heap, and provide access to this data
  */
+@Slf4j
 public abstract class Memory<V extends PlanningTreeInterface> implements FactContainerInterface,
     PlanningTreeInterface {
 
@@ -99,7 +100,7 @@ public abstract class Memory<V extends PlanningTreeInterface> implements FactCon
     if (fact != null) {
       return Optional.ofNullable(fact.getContent());
     }
-    MyLogger.getLogger().warning(
+    log.error(
         factKey.getName() + " is not present in " + agentType.getName() + " type definition.");
     return Optional.empty();
   }
@@ -112,7 +113,7 @@ public abstract class Memory<V extends PlanningTreeInterface> implements FactCon
     if (fact != null) {
       return Optional.ofNullable(fact.copyFact());
     }
-    MyLogger.getLogger().warning(
+    log.error(
         factKey.getName() + " is not present in " + agentType.getName() + " type definition.");
     return Optional.empty();
   }
@@ -123,8 +124,7 @@ public abstract class Memory<V extends PlanningTreeInterface> implements FactCon
     if (factSet != null) {
       return Optional.ofNullable((S) factSet.getContent().stream());
     }
-    MyLogger.getLogger().warning(
-        factKey.getName() + " is not present in " + agentType.getName() + " type definition.");
+    log.error(factKey.getName() + " is not present in " + agentType.getName() + " type definition.");
     return Optional.empty();
   }
 
@@ -136,7 +136,7 @@ public abstract class Memory<V extends PlanningTreeInterface> implements FactCon
     if (factSet != null) {
       return Optional.ofNullable(factSet.copyFact());
     }
-    MyLogger.getLogger().warning(
+    log.error(
         factKey.getName() + " is not present in " + agentType.getName() + " type definition.");
     return Optional.empty();
   }

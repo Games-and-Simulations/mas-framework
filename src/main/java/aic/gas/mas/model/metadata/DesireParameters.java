@@ -5,17 +5,18 @@ import aic.gas.mas.model.FactContainerInterface;
 import aic.gas.mas.model.knowledge.Fact;
 import aic.gas.mas.model.knowledge.FactSet;
 import aic.gas.mas.model.knowledge.Memory;
-import aic.gas.mas.utils.MyLogger;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Class to define container with parameters (facts) for desire classes to be accessed by it. As
  * this class is read only sharing it is thread safe
  */
+@Slf4j
 public class DesireParameters implements FactContainerInterface, DesireKeyIdentificationInterface {
 
   private final Map<FactKey, Fact<?>> factParameterMap = new HashMap<>();
@@ -45,7 +46,7 @@ public class DesireParameters implements FactContainerInterface, DesireKeyIdenti
     if (fact != null) {
       return Optional.ofNullable(fact.getContent());
     }
-    MyLogger.getLogger().warning(factKey.getName() + " is not present in parameters.");
+    log.error(factKey.getName() + " is not present in parameters.");
     return Optional.empty();
   }
 
@@ -54,27 +55,27 @@ public class DesireParameters implements FactContainerInterface, DesireKeyIdenti
     if (factSet != null) {
       return Optional.ofNullable((S) factSet.getContent().stream());
     }
-    MyLogger.getLogger().warning(factKey.getName() + " is not present in parameters.");
+    log.error(factKey.getName() + " is not present in parameters.");
     return Optional.empty();
   }
 
   @Override
   public boolean equals(Object o) {
-      if (this == o) {
-          return true;
-      }
-      if (o == null || getClass() != o.getClass()) {
-          return false;
-      }
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     DesireParameters that = (DesireParameters) o;
 
-      if (!factParameterMap.equals(that.factParameterMap)) {
-          return false;
-      }
-      if (!factSetParameterMap.equals(that.factSetParameterMap)) {
-          return false;
-      }
+    if (!factParameterMap.equals(that.factParameterMap)) {
+      return false;
+    }
+    if (!factSetParameterMap.equals(that.factSetParameterMap)) {
+      return false;
+    }
     return desireKey.equals(that.desireKey);
   }
 

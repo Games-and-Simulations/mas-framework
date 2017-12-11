@@ -4,21 +4,20 @@ import aic.gas.mas.model.QueuedItemInterfaceWithResponse;
 import aic.gas.mas.model.ResponseReceiverInterface;
 import aic.gas.mas.model.agents.Agent;
 import aic.gas.mas.model.knowledge.ReadOnlyMemory;
-import aic.gas.mas.model.servicies.beliefs.ReadOnlyMemoryRegister;
-import aic.gas.mas.model.servicies.beliefs.WorkingMemoryRegister;
-import aic.gas.mas.service.MASFacade;
-import aic.gas.mas.service.MediatorTemplate;
+import aic.gas.mas.model.servicies.beliefs.IReadOnlyMemoryRegister;
+import aic.gas.mas.model.servicies.beliefs.IWorkingMemoryRegister;
+import aic.gas.mas.model.servicies.beliefs.MemoryRegister;
+import aic.gas.mas.service.AMediatorTemplate;
 
 /**
  * KnowledgeMediator instance enables agents to share knowledge of agents by keeping each agent's
  * internal knowledge. Class defines method to access queue.
  */
 public class BeliefMediator extends
-    MediatorTemplate<ReadOnlyMemoryRegister, WorkingMemoryRegister> {
+    AMediatorTemplate<IReadOnlyMemoryRegister, IWorkingMemoryRegister> {
 
   public BeliefMediator() {
-    super(new WorkingMemoryRegister(),
-        MASFacade::getLengthOfIntervalBeforeUpdatingRegisterWithMemory);
+    super(new MemoryRegister());
   }
 
   /**

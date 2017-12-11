@@ -8,14 +8,15 @@ import aic.gas.mas.model.planing.IntentionCommand;
 import aic.gas.mas.model.planing.OwnDesire;
 import aic.gas.mas.model.planing.command.CommandFormulationStrategy;
 import aic.gas.mas.model.planing.command.ReasoningCommand;
-import aic.gas.mas.utils.MyLogger;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Concrete implementation of own desire with reasoning command formulation
  */
+@Slf4j
 public class OwnDesireWithIntentionWithReasoningCommandFormulation extends
     DesireFormulation.WithCommand<CommandFormulationStrategy<ReasoningCommand, IntentionCommand.OwnReasoning>> implements
     OwnInternalDesireFormulation<OwnDesire.Reasoning> {
@@ -66,7 +67,7 @@ public class OwnDesireWithIntentionWithReasoningCommandFormulation extends
     @Override
     public boolean supportsDesireType(DesireKey parent, DesireKey key) {
       if (stack.get(parent) == null || !stack.get(parent).supportsDesireType(key)) {
-        MyLogger.getLogger().warning(parent.getName() + " is not associated with " + key.getName());
+        log.error(parent.getName() + " is not associated with " + key.getName());
         return supportsType(key);
       }
       return true;

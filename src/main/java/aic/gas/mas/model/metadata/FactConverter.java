@@ -39,12 +39,12 @@ public abstract class FactConverter<V, K> implements Converter {
 
   @Override
   public boolean equals(Object o) {
-      if (this == o) {
-          return true;
-      }
-      if (o == null || getClass() != o.getClass()) {
-          return false;
-      }
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     FactConverter<?, ?> that = (FactConverter<?, ?>) o;
 
@@ -93,15 +93,15 @@ public abstract class FactConverter<V, K> implements Converter {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
+      if (!super.equals(o)) {
+        return false;
+      }
 
       BeliefFromKey<?> that = (BeliefFromKey<?>) o;
 
@@ -137,12 +137,12 @@ public abstract class FactConverter<V, K> implements Converter {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
 
       BeliefSetFromKey<?> that = (BeliefSetFromKey<?>) o;
 
@@ -178,12 +178,12 @@ public abstract class FactConverter<V, K> implements Converter {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
 
       BeliefFromDesire<?> that = (BeliefFromDesire<?>) o;
 
@@ -220,12 +220,12 @@ public abstract class FactConverter<V, K> implements Converter {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
 
       BeliefSetFromDesire<?> that = (BeliefSetFromDesire<?>) o;
 
@@ -259,12 +259,12 @@ public abstract class FactConverter<V, K> implements Converter {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
 
       Belief<?> that = (Belief<?>) o;
 
@@ -301,12 +301,12 @@ public abstract class FactConverter<V, K> implements Converter {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
 
       GlobalBelief<?> that = (GlobalBelief<?>) o;
 
@@ -345,12 +345,12 @@ public abstract class FactConverter<V, K> implements Converter {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
 
       GlobalBeliefForAgentType<?> that = (GlobalBeliefForAgentType<?>) o;
 
@@ -384,15 +384,15 @@ public abstract class FactConverter<V, K> implements Converter {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
+      if (!super.equals(o)) {
+        return false;
+      }
 
       BeliefSet<?> beliefSet = (BeliefSet<?>) o;
 
@@ -432,15 +432,15 @@ public abstract class FactConverter<V, K> implements Converter {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
+      if (!super.equals(o)) {
+        return false;
+      }
 
       GlobalBeliefSet<?> that = (GlobalBeliefSet<?>) o;
 
@@ -479,12 +479,12 @@ public abstract class FactConverter<V, K> implements Converter {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
 
       GlobalBeliefSetForAgentType<?> that = (GlobalBeliefSetForAgentType<?>) o;
 
@@ -523,15 +523,15 @@ public abstract class FactConverter<V, K> implements Converter {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
+      if (!super.equals(o)) {
+        return false;
+      }
 
       BeliefFromKeyPresence that = (BeliefFromKeyPresence) o;
 

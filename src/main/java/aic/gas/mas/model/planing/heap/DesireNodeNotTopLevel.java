@@ -10,13 +10,14 @@ import aic.gas.mas.model.planing.SharedDesireInRegister;
 import aic.gas.mas.model.planing.command.ActCommand;
 import aic.gas.mas.model.planing.command.CommandForIntention;
 import aic.gas.mas.model.planing.command.ReasoningCommand;
-import aic.gas.mas.utils.MyLogger;
 import java.util.List;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Template for desire not in top level
  */
+@Slf4j
 public abstract class DesireNodeNotTopLevel<T extends InternalDesire<? extends Intention>, K extends Node & IntentionNodeWithChildes & Parent<?, ?>> extends
     Node.NotTopLevel<K> implements DesireNodeInterface<IntentionNodeNotTopLevel<?, ?, ?>> {
 
@@ -58,7 +59,7 @@ public abstract class DesireNodeNotTopLevel<T extends InternalDesire<? extends I
 
     @Override
     IntentionNodeNotTopLevel<?, ?, ?> formDesireNodeAndReplaceIntentionNode() {
-      MyLogger.getLogger().warning("Accessing method which should be never used.");
+      log.error("Accessing method which should be never used.");
       throw new RuntimeException("Accessing method which should be never used.");
     }
 

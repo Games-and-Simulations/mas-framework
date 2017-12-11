@@ -19,16 +19,16 @@ import aic.gas.mas.model.planing.heap.visitors.CommandExecutor;
 import aic.gas.mas.model.planing.heap.visitors.CommitmentDecider;
 import aic.gas.mas.model.planing.heap.visitors.CommitmentRemovalDecider;
 import aic.gas.mas.service.MASFacade;
-import aic.gas.mas.service.MediatorTemplate;
 import aic.gas.mas.service.implementation.BeliefMediator;
 import aic.gas.mas.service.implementation.DesireMediator;
-import aic.gas.mas.utils.MyLogger;
 import java.util.Optional;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Template for agent. Main routine of agent runs in its own thread.
  */
+@Slf4j
 public abstract class Agent<E extends AgentType> implements AgentTypeBehaviourFactory,
     ResponseReceiverInterface<Boolean>, Runnable {
 
@@ -59,10 +59,10 @@ public abstract class Agent<E extends AgentType> implements AgentTypeBehaviourFa
     this.beliefMediator = masFacade.getBeliefMediator();
     this.agentType = agentType;
     this.beliefs = new WorkingMemory(heapOfTrees, this.agentType, this.id,
-        agentTypeID -> beliefMediator.getSnapshotOfRegister()
+        agentTypeID -> beliefMediator.getReadOnlyRegister()
             .getReadOnlyMemoriesForAgentType(agentTypeID),
-        agentId -> beliefMediator.getSnapshotOfRegister().getReadOnlyMemoryForAgent(agentId),
-        () -> beliefMediator.getSnapshotOfRegister().getReadOnlyMemories());
+        agentId -> beliefMediator.getReadOnlyRegister().getReadOnlyMemoryForAgent(agentId),
+        () -> beliefMediator.getReadOnlyRegister().getReadOnlyMemories());
   }
 
   @Override
@@ -79,7 +79,7 @@ public abstract class Agent<E extends AgentType> implements AgentTypeBehaviourFa
     //run main routine in its own thread
     Worker worker = new Worker();
     worker.start();
-    MyLogger.getLogger().info("Agent has started.");
+    log.info("Agent has started.");
   }
 
   @Override
@@ -97,12 +97,10 @@ public abstract class Agent<E extends AgentType> implements AgentTypeBehaviourFa
         try {
           lockMonitor.wait();
         } catch (InterruptedException e) {
-          MyLogger.getLogger()
-              .warning(worker.getClass().getSimpleName() + ": " + e.getLocalizedMessage());
+          log.error(worker.getClass().getSimpleName() + ": " + e.getLocalizedMessage());
         }
       }
     }
-    waitForMediatorNextUpdate(beliefMediator);
   }
 
   private void removeAgent(boolean removeFromKnowledge) {
@@ -114,26 +112,11 @@ public abstract class Agent<E extends AgentType> implements AgentTypeBehaviourFa
   }
 
   /**
-   * Method to wait on next update of mediator - to make sure all send data are propagated to
-   * registers
-   */
-  private void waitForMediatorNextUpdate(MediatorTemplate<?, ?> mediator) {
-    long currentUpdate = mediator.getUpdateCount();
-    while (currentUpdate == mediator.getUpdateCount()) {
-      try {
-        Thread.sleep(5);
-      } catch (InterruptedException e) {
-        MyLogger.getLogger().warning(getClass().getSimpleName() + ": " + e.getLocalizedMessage());
-      }
-    }
-  }
-
-  /**
    * Execute reasoning command
    */
   public void executeCommand(ReasoningCommand command) {
     if (!MASFacade.REASONING_EXECUTOR.executeCommand(command, beliefs)) {
-      MyLogger.getLogger().warning(this.getClass().getSimpleName() + ", " + agentType.getName()
+      log.error(this.getClass().getSimpleName() + ", " + agentType.getName()
           + " could not execute reasoning command");
     }
   }
@@ -264,8 +247,7 @@ public abstract class Agent<E extends AgentType> implements AgentTypeBehaviourFa
           try {
             lockMonitor.wait();
           } catch (InterruptedException e) {
-            MyLogger.getLogger()
-                .warning(worker.getClass().getSimpleName() + ": " + e.getLocalizedMessage());
+            log.error(worker.getClass().getSimpleName() + ": " + e.getLocalizedMessage());
           }
         }
       }
@@ -289,7 +271,7 @@ public abstract class Agent<E extends AgentType> implements AgentTypeBehaviourFa
 
       //init agent
       doRoutine(this);
-      heapOfTrees.initTopLevelDesires(desireMediator.getSnapshotOfRegister());
+      heapOfTrees.initTopLevelDesires(desireMediator.getReadOnlyRegister());
 
       while (true) {
 
@@ -304,8 +286,7 @@ public abstract class Agent<E extends AgentType> implements AgentTypeBehaviourFa
         commandExecutor.visitTree();
         commitmentRemovalDecider.visitTree();
         doRoutine(this);
-        waitForMediatorNextUpdate(desireMediator);
-        heapOfTrees.updateDesires(desireMediator.getSnapshotOfRegister());
+        heapOfTrees.updateDesires(desireMediator.getReadOnlyRegister());
       }
 
       removeAgent(removeAgentFromGlobalBeliefs);
@@ -317,8 +298,7 @@ public abstract class Agent<E extends AgentType> implements AgentTypeBehaviourFa
       //notify waiting method
       synchronized (lockMonitor) {
         if (!response) {
-          MyLogger.getLogger()
-              .warning(this.getClass().getSimpleName() + " could not execute command");
+          log.error(this.getClass().getSimpleName() + " could not execute command");
         }
         lockMonitor.notifyAll();
       }

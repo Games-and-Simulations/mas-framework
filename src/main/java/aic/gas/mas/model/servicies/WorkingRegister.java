@@ -1,14 +1,17 @@
 package aic.gas.mas.model.servicies;
 
 /**
- * Interface to be implemented by each working registry to define method which make snapshot of this
- * registry
+ * Common contract for working registers
  */
-public interface WorkingRegister<V extends Register<?>> {
+public interface WorkingRegister<V extends ReadOnlyRegister> extends ReadOnlyRegister {
 
   /**
-   * Create snapshot - read only - with current state of affairs
+   * Returns itself as read only register
    */
-  V makeSnapshot();
+  V getAsReadonlyRegister();
 
+  /**
+   * Execute maintenance (eg. forget)
+   */
+  void executeMaintenance();
 }

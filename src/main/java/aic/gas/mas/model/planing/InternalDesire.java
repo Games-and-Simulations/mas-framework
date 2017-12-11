@@ -8,16 +8,17 @@ import aic.gas.mas.model.metadata.AgentType;
 import aic.gas.mas.model.metadata.DesireKey;
 import aic.gas.mas.model.metadata.DesireParameters;
 import aic.gas.mas.model.metadata.FactKey;
-import aic.gas.mas.utils.MyLogger;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Class extending Desire describes template for internal desires agents may want to commit to.
  * Concrete implementation of this are used in planning heap.
  */
+@Slf4j
 public abstract class InternalDesire<T extends Intention<? extends InternalDesire<?>>> extends
     Desire
     implements FactContainerInterface, OnChangeActor, OnDestructionActor {
@@ -134,7 +135,7 @@ public abstract class InternalDesire<T extends Intention<? extends InternalDesir
     if (parentsDesireParameters.isPresent()) {
       return parentsDesireParameters.get().returnFactValueForGivenKey(factKey);
     }
-    MyLogger.getLogger().warning("There are no parameters from parent intention present.");
+    log.error("There are no parameters from parent intention present.");
     return Optional.empty();
   }
 
@@ -146,7 +147,7 @@ public abstract class InternalDesire<T extends Intention<? extends InternalDesir
     if (parentsDesireParameters.isPresent()) {
       return parentsDesireParameters.get().returnFactSetValueForGivenKey(factKey);
     }
-    MyLogger.getLogger().warning("There are no parameters from parent intention present.");
+    log.error("There are no parameters from parent intention present.");
     return Optional.empty();
   }
 
@@ -157,15 +158,15 @@ public abstract class InternalDesire<T extends Intention<? extends InternalDesir
 
   @Override
   public boolean equals(Object o) {
-      if (this == o) {
-          return true;
-      }
-      if (!(o instanceof InternalDesire)) {
-          return false;
-      }
-      if (!super.equals(o)) {
-          return false;
-      }
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof InternalDesire)) {
+      return false;
+    }
+    if (!super.equals(o)) {
+      return false;
+    }
 
     InternalDesire that = (InternalDesire) o;
 

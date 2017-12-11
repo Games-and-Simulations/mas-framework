@@ -10,8 +10,7 @@ import aic.gas.mas.model.planing.Desire;
 import aic.gas.mas.model.planing.DesireFromAnotherAgent;
 import aic.gas.mas.model.planing.SharedDesire;
 import aic.gas.mas.model.planing.SharedDesireForAgents;
-import aic.gas.mas.model.servicies.desires.ReadOnlyDesireRegister;
-import aic.gas.mas.utils.MyLogger;
+import aic.gas.mas.model.servicies.desires.IReadOnlyDesireRegister;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -23,10 +22,12 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Facade for planning heapOfTrees. HeapOfTrees manages nodes at top level.
  */
+@Slf4j
 public class HeapOfTrees implements PlanningTreeInterface,
     Parent<DesireNodeAtTopLevel<?>, IntentionNodeAtTopLevel<?, ?>>,
     ResponseReceiverInterface<Boolean> {
@@ -70,7 +71,7 @@ public class HeapOfTrees implements PlanningTreeInterface,
   /**
    * Initialize top level of heapOfTrees with desires' types specified in agent type
    */
-  public void initTopLevelDesires(ReadOnlyDesireRegister desireRegister) {
+  public void initTopLevelDesires(IReadOnlyDesireRegister desireRegister) {
     updateTopLevelDesires(desireRegister, agent.getAgentType().returnPlanAsSetOfDesiresForOthers(),
         agent.getAgentType().returnPlanAsSetOfDesiresWithAbstractIntention(),
         agent.getAgentType().returnPlanAsSetOfDesiresWithIntentionToAct(),
@@ -80,7 +81,7 @@ public class HeapOfTrees implements PlanningTreeInterface,
   /**
    * Method update top level nodes
    */
-  public void updateDesires(ReadOnlyDesireRegister desireRegister) {
+  public void updateDesires(IReadOnlyDesireRegister desireRegister) {
     updateTopLevelDesires(desireRegister,
         manipulatorWithDesiresForOthers.removeDesiresForUncommittedNodesAndReturnTheirKeys(),
         manipulatorWithOwnAbstractPlan.removeDesiresForUncommittedNodesAndReturnTheirKeys(),
@@ -97,7 +98,7 @@ public class HeapOfTrees implements PlanningTreeInterface,
   /**
    * Method update top level nodes
    */
-  private void updateTopLevelDesires(ReadOnlyDesireRegister desireRegister,
+  private void updateTopLevelDesires(IReadOnlyDesireRegister desireRegister,
       Set<DesireKey> desiresForOthers, Set<DesireKey> desiresWithAbstractIntention,
       Set<DesireKey> desiresWithIntentionToAct, Set<DesireKey> desiresWithIntentionToReason) {
     desiresForOthers.stream()
@@ -122,7 +123,7 @@ public class HeapOfTrees implements PlanningTreeInterface,
   /**
    * Take register and update own structures with shared desires
    */
-  private void resolveSharedDesires(ReadOnlyDesireRegister desireRegister) {
+  private void resolveSharedDesires(IReadOnlyDesireRegister desireRegister) {
     desireRegister.getOwnSharedDesires(agent).forEach(
         sharedDesire -> sharedDesiresForOtherAgents.get(sharedDesire)
             .updateCommittedAgentsSet(sharedDesire));
@@ -177,7 +178,7 @@ public class HeapOfTrees implements PlanningTreeInterface,
                   new DesireNodeAtTopLevel.FromAnotherAgent.WithIntentionWithPlan(this,
                       intentionWithPlan.get()));
             } else {
-              MyLogger.getLogger().warning(agent.getAgentType().getName()
+              log.error(agent.getAgentType().getName()
                   + " is trying to add desire from other which is not supported.");
               throw new IllegalArgumentException(agent.getAgentType().getName()
                   + " is trying to add desire from other which is not supported.");

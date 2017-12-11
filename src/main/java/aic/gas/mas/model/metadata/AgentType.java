@@ -16,19 +16,20 @@ import aic.gas.mas.model.planing.DesireForOthers;
 import aic.gas.mas.model.planing.DesireFromAnotherAgent;
 import aic.gas.mas.model.planing.OwnDesire;
 import aic.gas.mas.model.planing.SharedDesireForAgents;
-import aic.gas.mas.utils.MyLogger;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Class describing metadata for agent type - used for identification and parameter type definition
  * - fact types and fact set types in memory (internal beliefs) as well as supported (implemented)
  * desires by agent type and ways of their creation using desire key
  */
+@Slf4j
 public class AgentType {
 
   private final OwnDesireWithAbstractIntentionFormulation.Stacked
@@ -112,12 +113,12 @@ public class AgentType {
 
   @Override
   public boolean equals(Object o) {
-      if (this == o) {
-          return true;
-      }
-      if (o == null || getClass() != o.getClass()) {
-          return false;
-      }
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     AgentType agentType = (AgentType) o;
 
@@ -137,7 +138,7 @@ public class AgentType {
         .filter(key -> !desireFormulation.supportsDesireType(key))
         .findAny();
     if (first.isPresent()) {
-      MyLogger.getLogger().warning(
+      log.error(
           first.get().getName() + " can't be instantiated in abstract plan for " + agentTypeID
               .getName());
       throw new IllegalArgumentException(
@@ -160,7 +161,7 @@ public class AgentType {
         .map(Optional::get)
         .findAny();
     if (first.isPresent()) {
-      MyLogger.getLogger().warning(
+      log.error(
           first.get().getName() + " can't be instantiated in abstract plan for " + agentTypeID
               .getName());
       throw new IllegalArgumentException(
@@ -198,7 +199,7 @@ public class AgentType {
     Optional<OwnDesire.WithAbstractIntention> withAbstractIntention = ownDesireWithAbstractIntentionFormulation
         .formDesire(parentKey, key, memory, parentsDesireParameters);
     if (!withAbstractIntention.isPresent()) {
-      MyLogger.getLogger().warning(this.getName()
+      log.error(this.getName()
           + " does not support creation of OwnDesire.WithAbstractIntention instance for desire key: "
           + key.getName());
       throw new IllegalArgumentException(this.getName()
@@ -216,7 +217,7 @@ public class AgentType {
     Optional<OwnDesire.WithAbstractIntention> withAbstractIntention = ownDesireWithAbstractIntentionFormulation
         .formDesire(key, memory);
     if (!withAbstractIntention.isPresent()) {
-      MyLogger.getLogger().warning(this.getName()
+      log.error(this.getName()
           + " does not support creation of OwnDesire.WithAbstractIntention instance for desire key: "
           + key.getName());
       throw new IllegalArgumentException(this.getName()
@@ -234,7 +235,7 @@ public class AgentType {
     Optional<OwnDesire.Acting> acting = ownDesireWithIntentionWithActingCommandFormulation
         .formDesire(parentKey, key, memory, parentsDesireParameters);
     if (!acting.isPresent()) {
-      MyLogger.getLogger().warning(this.getName()
+      log.error(this.getName()
           + " does not support creation of OwnDesire.Acting instance for desire key: " + key
           .getName());
       throw new IllegalArgumentException(this.getName()
@@ -251,7 +252,7 @@ public class AgentType {
     Optional<OwnDesire.Acting> acting = ownDesireWithIntentionWithActingCommandFormulation
         .formDesire(key, memory);
     if (!acting.isPresent()) {
-      MyLogger.getLogger().warning(this.getName()
+      log.error(this.getName()
           + " does not support creation of OwnDesire.Acting instance for desire key: " + key
           .getName());
       throw new IllegalArgumentException(this.getName()
@@ -269,7 +270,7 @@ public class AgentType {
     Optional<OwnDesire.Reasoning> reasoning = ownDesireWithIntentionWithReasoningCommandFormulation
         .formDesire(parentKey, key, memory, parentsDesireParameters);
     if (!reasoning.isPresent()) {
-      MyLogger.getLogger().warning(this.getName()
+      log.error(this.getName()
           + " does not support creation of OwnDesire.Reasoning instance for desire key: " + key
           .getName());
       throw new IllegalArgumentException(this.getName()
@@ -286,7 +287,7 @@ public class AgentType {
     Optional<OwnDesire.Reasoning> reasoning = ownDesireWithIntentionWithReasoningCommandFormulation
         .formDesire(key, memory);
     if (!reasoning.isPresent()) {
-      MyLogger.getLogger().warning(this.getName()
+      log.error(this.getName()
           + " does not support creation of OwnDesire.Reasoning instance for desire key: " + key
           .getName());
       throw new IllegalArgumentException(this.getName()
@@ -304,7 +305,7 @@ public class AgentType {
     Optional<DesireForOthers> desireForOthers = ownDesireWithSharedDesireFormulation
         .formDesire(parentKey, key, memory, parentsDesireParameters);
     if (!desireForOthers.isPresent()) {
-      MyLogger.getLogger().warning(
+      log.error(
           this.getName() + " does not support creation of DesireForOthers instance for desire key: "
               + key.getName());
       throw new IllegalArgumentException(
@@ -321,7 +322,7 @@ public class AgentType {
     Optional<DesireForOthers> desireForOthers = ownDesireWithSharedDesireFormulation
         .formDesire(key, memory);
     if (!desireForOthers.isPresent()) {
-      MyLogger.getLogger().warning(
+      log.error(
           this.getName() + " does not support creation of DesireForOthers instance for desire key: "
               + key.getName());
       throw new IllegalArgumentException(
@@ -337,7 +338,7 @@ public class AgentType {
   public void addConfiguration(DesireKey key, ConfigurationWithAbstractPlan configuration,
       boolean isForSelf) {
     if (isConfigurationInitialized) {
-      MyLogger.getLogger().warning("Cannot add new configuration to initialized type.");
+      log.error("Cannot add new configuration to initialized type.");
       throw new RuntimeException("Cannot add new configuration to initialized type.");
     }
     if (isForSelf) {
@@ -355,7 +356,7 @@ public class AgentType {
   public void addConfiguration(DesireKey key, DesireKey parent,
       ConfigurationWithAbstractPlan configuration) {
     if (isConfigurationInitialized) {
-      MyLogger.getLogger().warning("Cannot add new configuration to initialized type.");
+      log.error("Cannot add new configuration to initialized type.");
       throw new RuntimeException("Cannot add new configuration to initialized type.");
     }
     ownDesireWithAbstractIntentionFormulation
@@ -368,7 +369,7 @@ public class AgentType {
   public void addConfiguration(DesireKey key,
       ConfigurationWithCommand.WithActingCommandDesiredBySelf configuration) {
     if (isConfigurationInitialized) {
-      MyLogger.getLogger().warning("Cannot add new configuration to initialized type.");
+      log.error("Cannot add new configuration to initialized type.");
       throw new RuntimeException("Cannot add new configuration to initialized type.");
     }
     ownDesireWithIntentionWithActingCommandFormulation
@@ -381,7 +382,7 @@ public class AgentType {
   public void addConfiguration(DesireKey key, DesireKey parent,
       ConfigurationWithCommand.WithActingCommandDesiredBySelf configuration) {
     if (isConfigurationInitialized) {
-      MyLogger.getLogger().warning("Cannot add new configuration to initialized type.");
+      log.error("Cannot add new configuration to initialized type.");
       throw new RuntimeException("Cannot add new configuration to initialized type.");
     }
     ownDesireWithIntentionWithActingCommandFormulation
@@ -394,7 +395,7 @@ public class AgentType {
   public void addConfiguration(DesireKey key,
       ConfigurationWithCommand.WithReasoningCommandDesiredBySelf configuration) {
     if (isConfigurationInitialized) {
-      MyLogger.getLogger().warning("Cannot add new configuration to initialized type.");
+      log.error("Cannot add new configuration to initialized type.");
       throw new RuntimeException("Cannot add new configuration to initialized type.");
     }
     ownDesireWithIntentionWithReasoningCommandFormulation
@@ -407,7 +408,7 @@ public class AgentType {
   public void addConfiguration(DesireKey key, DesireKey parent,
       ConfigurationWithCommand.WithReasoningCommandDesiredBySelf configuration) {
     if (isConfigurationInitialized) {
-      MyLogger.getLogger().warning("Cannot add new configuration to initialized type.");
+      log.error("Cannot add new configuration to initialized type.");
       throw new RuntimeException("Cannot add new configuration to initialized type.");
     }
     ownDesireWithIntentionWithReasoningCommandFormulation
@@ -420,7 +421,7 @@ public class AgentType {
   public void addConfiguration(DesireKey key,
       ConfigurationWithCommand.WithActingCommandDesiredByOtherAgent configuration) {
     if (isConfigurationInitialized) {
-      MyLogger.getLogger().warning("Cannot add new configuration to initialized type.");
+      log.error("Cannot add new configuration to initialized type.");
       throw new RuntimeException("Cannot add new configuration to initialized type.");
     }
     anotherAgentsDesireWithIntentionWithActingCommandFormulation
@@ -432,7 +433,7 @@ public class AgentType {
    */
   public void addConfiguration(DesireKey key, ConfigurationWithSharedDesire configuration) {
     if (isConfigurationInitialized) {
-      MyLogger.getLogger().warning("Cannot add new configuration to initialized type.");
+      log.error("Cannot add new configuration to initialized type.");
       throw new RuntimeException("Cannot add new configuration to initialized type.");
     }
     ownDesireWithSharedDesireFormulation.addDesireFormulationConfiguration(key, configuration);
@@ -444,7 +445,7 @@ public class AgentType {
   public void addConfiguration(DesireKey key, DesireKey parent,
       ConfigurationWithSharedDesire configuration) {
     if (isConfigurationInitialized) {
-      MyLogger.getLogger().warning("Cannot add new configuration to initialized type.");
+      log.error("Cannot add new configuration to initialized type.");
       throw new RuntimeException("Cannot add new configuration to initialized type.");
     }
     ownDesireWithSharedDesireFormulation

@@ -9,13 +9,14 @@ import aic.gas.mas.model.planing.InternalDesire;
 import aic.gas.mas.model.planing.OwnDesire;
 import aic.gas.mas.model.planing.SharedDesireForAgents;
 import aic.gas.mas.model.planing.SharedDesireInRegister;
-import aic.gas.mas.utils.MyLogger;
 import java.util.List;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Template for desire in top level
  */
+@Slf4j
 public abstract class DesireNodeAtTopLevel<T extends InternalDesire<? extends Intention>> extends
     Node.TopLevel implements DesireNodeInterface<IntentionNodeAtTopLevel<?, ?>> {
 
@@ -92,8 +93,7 @@ public abstract class DesireNodeAtTopLevel<T extends InternalDesire<? extends In
             try {
               lockMonitor.wait();
             } catch (InterruptedException e) {
-              MyLogger.getLogger()
-                  .warning(this.getClass().getSimpleName() + ": " + e.getLocalizedMessage());
+              log.error(this.getClass().getSimpleName() + ": " + e.getLocalizedMessage());
             }
 
             //if agent is committed according to system...

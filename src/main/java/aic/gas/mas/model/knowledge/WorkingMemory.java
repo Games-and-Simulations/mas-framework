@@ -3,14 +3,15 @@ package aic.gas.mas.model.knowledge;
 import aic.gas.mas.model.metadata.AgentType;
 import aic.gas.mas.model.metadata.FactKey;
 import aic.gas.mas.model.planing.heap.HeapOfTrees;
-import aic.gas.mas.utils.MyLogger;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Represents agent's own memory
  */
+@Slf4j
 public class WorkingMemory extends Memory<HeapOfTrees> {
 
   public WorkingMemory(HeapOfTrees heapOfTrees, AgentType agentType, int agentId,
@@ -53,7 +54,7 @@ public class WorkingMemory extends Memory<HeapOfTrees> {
     if (fact != null) {
       fact.addFact(value);
     } else {
-      MyLogger.getLogger().warning(
+      log.error(
           factKey.getName() + " is not present in " + agentType.getName() + " type definition.");
     }
   }
@@ -66,7 +67,7 @@ public class WorkingMemory extends Memory<HeapOfTrees> {
     if (fact != null) {
       fact.removeFact();
     } else {
-      MyLogger.getLogger().warning(
+      log.error(
           factKey.getName() + " is not present in " + agentType.getName() + " type definition.");
     }
   }
@@ -79,7 +80,7 @@ public class WorkingMemory extends Memory<HeapOfTrees> {
     if (factSet != null) {
       factSet.addFact(value);
     } else {
-      MyLogger.getLogger().warning(
+      log.error(
           factKey.getName() + " is not present in " + agentType.getName() + " type definition.");
     }
   }
@@ -93,7 +94,7 @@ public class WorkingMemory extends Memory<HeapOfTrees> {
       factSet.eraseSet();
       values.forEach(factSet::addFact);
     } else {
-      MyLogger.getLogger().warning(
+      log.error(
           factKey.getName() + " is not present in " + agentType.getName() + " type definition.");
     }
   }
@@ -106,7 +107,7 @@ public class WorkingMemory extends Memory<HeapOfTrees> {
     if (factSet != null) {
       factSet.removeFact(value);
     } else {
-      MyLogger.getLogger().warning(
+      log.error(
           factKey.getName() + " is not present in " + agentType.getName() + " type definition.");
     }
   }
@@ -119,7 +120,7 @@ public class WorkingMemory extends Memory<HeapOfTrees> {
     if (factSet != null) {
       factSet.eraseSet();
     } else {
-      MyLogger.getLogger().warning(
+      log.error(
           factKey.getName() + " is not present in " + agentType.getName() + " type definition.");
     }
   }

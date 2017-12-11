@@ -6,14 +6,15 @@ import aic.gas.mas.model.metadata.DesireParameters;
 import aic.gas.mas.model.metadata.agents.configuration.CommonConfiguration;
 import aic.gas.mas.model.metadata.agents.configuration.ConfigurationWithSharedDesire;
 import aic.gas.mas.model.planing.DesireForOthers;
-import aic.gas.mas.utils.MyLogger;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Concrete implementation of own desire with desire to share with others
  */
+@Slf4j
 public class OwnDesireWithSharedDesireFormulation extends DesireFormulation implements
     OwnInternalDesireFormulation<DesireForOthers> {
 
@@ -76,7 +77,7 @@ public class OwnDesireWithSharedDesireFormulation extends DesireFormulation impl
     @Override
     public boolean supportsDesireType(DesireKey parent, DesireKey key) {
       if (stack.get(parent) == null || !stack.get(parent).supportsDesireType(key)) {
-        MyLogger.getLogger().warning(parent.getName() + " is not associated with " + key.getName());
+        log.error(parent.getName() + " is not associated with " + key.getName());
         return supportsType(key);
       }
       return true;

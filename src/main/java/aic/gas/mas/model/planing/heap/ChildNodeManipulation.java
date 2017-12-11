@@ -2,15 +2,16 @@ package aic.gas.mas.model.planing.heap;
 
 import aic.gas.mas.model.metadata.DesireKey;
 import aic.gas.mas.model.metadata.DesireParameters;
-import aic.gas.mas.utils.MyLogger;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Generic node manipulator
  */
+@Slf4j
 class ChildNodeManipulation<V extends Node<?> & VisitorAcceptor & IntentionNodeInterface, K extends Node<?> & DesireNodeInterface<?>> {
 
   final Map<DesireParameters, K> desiresNodesByKey = new HashMap<>();
@@ -42,8 +43,7 @@ class ChildNodeManipulation<V extends Node<?> & VisitorAcceptor & IntentionNodeI
       desiresNodesByKey.remove(desireNode.desireParameters);
       intentionNodesByKey.put(intentionNode.desireParameters, intentionNode);
     } else {
-      MyLogger.getLogger()
-          .warning("Could not replace desire by intention, desire node is missing.");
+      log.error("Could not replace desire by intention, desire node is missing.");
       throw new RuntimeException("Could not replace desire by intention, desire node is missing.");
     }
   }
@@ -56,8 +56,7 @@ class ChildNodeManipulation<V extends Node<?> & VisitorAcceptor & IntentionNodeI
       intentionNodesByKey.remove(intentionNode.desireParameters);
       desiresNodesByKey.put(desireNode.desireParameters, desireNode);
     } else {
-      MyLogger.getLogger()
-          .warning("Could not replace intention by desire, intention node is missing.");
+      log.error("Could not replace intention by desire, intention node is missing.");
       throw new RuntimeException(
           "Could not replace intention by desire, intention node is missing.");
     }
